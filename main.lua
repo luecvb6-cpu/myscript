@@ -1,43 +1,50 @@
--- My Custom Script Menu
-local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("My Custom Script", "BloodTheme")
+local SAE = "https://api.luarmor.net/files/v4/loaders/d70c93187ff5b907707597a24be.lua"
+local RAP = "https://api.luarmor.net/files/v4/loaders/0dbcaa9e992477523d3ba4d7dbdef.lua"
+local JFA = "https://raw.githubusercontent.com/tienkhanh1/Chilli-Hub-Script/refs/heads/main/JumpForAnimals"
+local SAB = "https://raw.githubusercontent.com/tienkhanh1/spicy/refs/heads/main/Steal-a-Brainrot"
+local MM2 = "https://api.luarmor.net/files/v4/loaders/2bf348894416eld3deee40be756d42ff.lua"
+local BROOK = "https://api.luarmor.net/files/v4/loaders/89190a03fd337349cef140d576357ba3.lua"
 
-local Tab = Window:NewTab("Main Menu")
-local Section = Tab:NewSection("មុខងារពិសេស")
+local byGameId = {
+    [1056314921] = SAE,
+    [10035204815] = RAP,
+    [10690360998] = JFA,
+    [7709344488] = SAB,
+    [66654135] = MM2,
+    [1686885941] = BROOK,
+}
 
--- មុខងារទី១៖ ប៊ូតុងប្រមូលពងអូតូ (Auto Hatch) បើក/បិទ
-local _G.AutoHatch = false
-Section:NewToggle("ប្រមូលពងល្អៗអូតូ (Auto Hatch)", "ចុចដើម្បីបើកឱ្យវាទៅយកពងអូតូ", function(state)
-    _G.AutoHatch = state
-    task.spawn(function()
-        while _G.AutoHatch do
-            task.wait(0.5)
-            pcall(function()
-                for _, v in pairs(workspace:GetDescendants()) do
-                    if v:IsA("Model") and (v.Name:lower():find("egg") or v.Name:lower():find("pet")) then
-                        local lp = game:GetService("Players").LocalPlayer
-                        if lp.Character and lp.Character:FindFirstChild("HumanoidRootPart") and v.PrimaryPart then
-                            lp.Character.HumanoidRootPart.CFrame = v.PrimaryPart.CFrame
-                        end
-                    end
-                end
-            end)
+local byPlaceId = {
+    [10777070777162] = SAE,
+    [124216119970534] = RAP,
+    [126870839873209] = JFA,
+    [109983688079237] = SAB,
+    [142823291] = MM2,
+    [492492222] = BROOK,
+}
+
+local gameId = game.GameId
+while gameId == 0 and game.PlaceId == 0 do
+    task.wait()
+    gameId = game.GameId
+end
+
+local url = byGameId[gameId] or byPlaceId[game.PlaceId]
+if not url then
+    return
+end
+
+for _ = 1, 3 do
+    local ok, source = pcall(game.HttpGet, game, url)
+    if ok and type(source) == "string" and source ~= "" then
+        local chunk = loadstring(source)
+        if chunk then
+            chunk()
         end
-    end)
-end)
+        return
+    end
+    task.wait(0.5)
+end
 
--- មុខងារទី២៖ ប៊ូតុងរត់លឿនខ្លាំង (Super Speed) បើក/បិទ
-Section:NewToggle("រត់លឿនខ្លាំង (Super Speed)", "ចុចដើម្បីឱ្យតួអង្គរត់លឿនជាងគេ", function(state)
-    local player = game:GetService("Players").LocalPlayer
-    pcall(function()
-        if player.Character and player.Character:FindFirstChild("Humanoid") then
-            if state then
-                player.Character.Humanoid.WalkSpeed = 150
-            else
-                player.Character.Humanoid.WalkSpeed = 16
-            end
-        end
-    end)
-end)
 
     
