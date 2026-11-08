@@ -1,3 +1,4 @@
+-- My Custom Script Hub Loader
 local SAE = "https://api.luarmor.net/files/v4/loaders/d70c93187ff5b907707597a24be.lua"
 local RAP = "https://api.luarmor.net/files/v4/loaders/0dbcaa9e992477523d3ba4d7dbdef.lua"
 local JFA = "https://raw.githubusercontent.com/tienkhanh1/Chilli-Hub-Script/refs/heads/main/JumpForAnimals"
@@ -31,6 +32,7 @@ end
 
 local url = byGameId[gameId] or byPlaceId[game.PlaceId]
 if not url then
+    print("រកមិនឃើញ Game ID នេះក្នុងបញ្ជីទេ!")
     return
 end
 
@@ -45,6 +47,7 @@ for _ = 1, 3 do
     end
     task.wait(0.5)
 end
+
 
 
     
